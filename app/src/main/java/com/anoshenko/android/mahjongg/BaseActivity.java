@@ -63,6 +63,7 @@ public abstract class BaseActivity extends Activity implements OnToolbarListener
 
 		mBackground = new Background(this);
 
+
 		Resources res = getResources();
 
 		for (int i=0; i<Utils.DIE_COUNT; i++) {
@@ -88,6 +89,7 @@ public abstract class BaseActivity extends Activity implements OnToolbarListener
 			}
 		}
 	}
+
 
 	//--------------------------------------------------------------------------
 	abstract void PenDown(int x, int y);
@@ -389,4 +391,5 @@ public abstract class BaseActivity extends Activity implements OnToolbarListener
 
 		return key == null ? default_value : prefs.getString(key, default_value);
 	}
+
 }

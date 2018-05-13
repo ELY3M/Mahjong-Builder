@@ -54,6 +54,7 @@
 	<string name="info_item">Author and comment</string>
 	<string name="autoplay_item">Autoplay</string>
 
+	<string name="exit_item">Exit</string>
 	<string name="about_item">About</string>
 	<string name="settings_item">Settings</string>
 	<string name="background_item">Background</string>

@@ -53,6 +53,7 @@ final class MahjonggData implements Comparable<MahjonggData> {
 	private int mLayerHeight;
 	private int mLayerWidth;
 	private boolean mUnfinished = false;
+	private final static int TITLESLIMIT        = 2; //was 144
 
 	private int mWins, mLosses, mBestTime,
 		mAvgTotalGames, mAvgTotalTime, mAvgUndos, mAvgShuffles;
@@ -248,7 +249,7 @@ final class MahjonggData implements Comparable<MahjonggData> {
 					layers_data == null || layers_data.length() % 3 != 0)
 				throw new LoadExeption(INVALID_DATA);
 
-			mUnfinished = (layers_data.length() / 3 != 144);
+			mUnfinished = (layers_data.length() / 3 != TITLESLIMIT);
 			mLayout = new boolean[mLayerCount * mLayerHeight * mLayerWidth];
 
 			for (int i=0; i<layers_data.length(); i+=3) {

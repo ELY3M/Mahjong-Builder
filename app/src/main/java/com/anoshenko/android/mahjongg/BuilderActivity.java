@@ -43,6 +43,8 @@ public class BuilderActivity extends BaseActivity {
 	private final static int LAYER_HEIGHT		= 18;
 	private final static int LAYER_WIDTH		= 30;
 
+	private final static int TITLESLIMIT        = 144;
+
 	private final static String LEFT_FREE_KEY		= "LEFT_FREE_KEY";
 	private final static String TOP_FREE_KEY		= "TOP_FREE_KEY";
 	private final static String LAYOUT_KEY			= "LAYOUT_KEY_KEY";
@@ -139,7 +141,7 @@ public class BuilderActivity extends BaseActivity {
 	private int mCurrentLayer = 0;
 	private int mScale = 1;
 	private int mLayerCount = 1;
-	private int mLeftDie = 144;
+	private int mLeftDie = TITLESLIMIT; //was 144
 
 	private int mDownX, mDownY, mLastX, mLastY;
 	private int mScrollX, mScrollY;
@@ -266,7 +268,7 @@ public class BuilderActivity extends BaseActivity {
 			e.printStackTrace();
 		}
 
-		mLeftDie = 144;
+		mLeftDie = TITLESLIMIT;  //was 144
 
 		if (mData == null)
 			mData = new MahjonggData(this);
@@ -480,7 +482,7 @@ public class BuilderActivity extends BaseActivity {
 			menu = new PopupMenu(this, this);
 			menu.addItem(Command.ADD_SERIES, R.string.add_group_item, R.drawable.icon_action_add_series);
 			menu.addItem(Command.ADD_SINGLE, R.string.add_single_item, R.drawable.icon_action_add);
-			menu.addItem(Command.REMOVE, R.string.remove_item, R.drawable.icon_action_remove, mLeftDie < 144);
+			menu.addItem(Command.REMOVE, R.string.remove_item, R.drawable.icon_action_remove, mLeftDie < TITLESLIMIT);  //was 144
 			menu.addItem(Command.MOVE_LAST, R.string.move_last_item, R.drawable.icon_move_last,
 					getLastFragment() != null);
 			menu.addItem(Command.MOVE_LAYER, R.string.move_layer_item, R.drawable.icon_move_layer,
@@ -859,7 +861,7 @@ public class BuilderActivity extends BaseActivity {
 	boolean KeyDown(int keyCode, KeyEvent event) {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_BACK:
-			if (mLeftDie == 144 && mData.getId() < 0)
+			if (mLeftDie == TITLESLIMIT && mData.getId() < 0)  //was 144
 				return false;
 
 			if (mLeftDie > 0) {

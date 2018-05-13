@@ -22,6 +22,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +32,8 @@ import android.widget.TabHost;
 
 public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 
+
+	final static String TAG = "mahjong selectact";
 	private final static String FAVORITES_TAG = "FAVORITES";
 	private final static String GAME_LIST_TAG = "GAME_LIST";
 
@@ -77,6 +81,7 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 		tab.setContent(R.id.AllGamesList);
 		mTabHost.addTab(tab);
 
+
 		createGameList();
 
 		Bitmap bitmap = Bitmap.createBitmap(mPreviewWidth, mPreviewHeight, Bitmap.Config.ARGB_8888);
@@ -98,6 +103,16 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 		mTabHost.setCurrentTab(current);
 
 		(new Thread(new GameLoader())).start();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+		Log.i(TAG, "back key pressed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		openOptionsMenu();
+		return true;
+		// use this instead if you want to preserve onKeyDown() behavior
+		// return super.onKeyDown(keyCode, event);
 	}
 
 	//--------------------------------------------------------------------------
@@ -203,13 +218,13 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 
 	//--------------------------------------------------------------------------
 	public void onItemClick(MahjonggData mahjongg) {
-		if (mahjongg.isUnfinished()) {
-			Utils.Note(this, R.string.disable_play);
-		} else {
+		//if (mahjongg.isUnfinished()) {
+		//	Utils.Note(this, R.string.disable_play);
+		//} else {
 			Intent intent = new Intent(this, PlayActivity.class);
 			intent.putExtra(BaseActivity.GAME_ID_KEY, mahjongg.getId());
 			startActivityForResult(intent, Command.PLAY_ACTIVITY);
-		}
+		//}
 	}
 
 	//--------------------------------------------------------------------------
@@ -223,7 +238,7 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 		menu.setTitle(mahjongg.getName());
 
 		menu.addItem(Command.PLAY, R.string.play_item, R.drawable.icon_start,
-				mahjongg.getId() < MahjonggData.USER_GAME_ID || !mahjongg.isUnfinished());
+				mahjongg.getId() < MahjonggData.USER_GAME_ID /*|| !mahjongg.isUnfinished() */);
 
 		if (mTabHost.getCurrentTab() == 0)
 			menu.addItem(Command.REMOVE_FAVORITE, R.string.remove_favorite_item, R.drawable.icon_favorite_remove);
@@ -361,6 +376,10 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 
 		switch (item.getItemId()) {
+		case Command.EXIT:
+				Utils.Exit();
+				return true;
+
 		case Command.ABOUT:
 			Utils.showAbout(this);
 			return true;

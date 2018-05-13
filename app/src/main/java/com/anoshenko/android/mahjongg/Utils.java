@@ -172,6 +172,9 @@ public class Utils {
 		menu.add(Menu.NONE, Command.ABOUT, 3, R.string.about_item)
 			.setIcon(R.drawable.icon_info);
 
+		menu.add(Menu.NONE, Command.EXIT, 4, R.string.exit_item)
+				.setIcon(R.drawable.icon_exit);
+
 	}
 
 	//--------------------------------------------------------------------------
@@ -194,6 +197,12 @@ public class Utils {
 		dialog.setNeutralButton(android.R.string.ok, null);
 		dialog.setCancelable(true);
 		return dialog.show();
+	}
+
+	final static void Exit() {
+		//PackageManager pm = context.getPackageManager();
+		System.exit(0);
+
 	}
 
 	//--------------------------------------------------------------------------

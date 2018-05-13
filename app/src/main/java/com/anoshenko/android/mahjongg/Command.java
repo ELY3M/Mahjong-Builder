@@ -3,6 +3,7 @@ package com.anoshenko.android.mahjongg;
 final class Command {
 
 	final static int NONE				= 0;
+	final static int EXIT             = 1;
 
 	final static int UNDO				= 100;
 	final static int REDO				= 101;
