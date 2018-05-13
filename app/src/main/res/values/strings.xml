@@ -6,8 +6,8 @@
 
 	<string name="version_text">Version</string>
 	<string name="license">License: GPL3\nhttp://www.gnu.org/licenses/gpl.html</string>
-	<string name="copyright">Developers: Alexei Anoshenko, Roland Meier</string>
-	<string name="home_page">Project Page:\nhttp://code.google.com/p/mahjonggbuilder/</string>
+	<string name="copyright">Developer: ELY M.\nCredit: Alexei Anoshenko, Roland Meier</string>
+	<string name="home_page">Project Page: https://github.com/ELY3M/Mahjong-Builder\nOriginal Project Page:\nhttp://code.google.com/p/mahjonggbuilder/</string>
 
 	<string name="nameless">[nameless]</string>
 
