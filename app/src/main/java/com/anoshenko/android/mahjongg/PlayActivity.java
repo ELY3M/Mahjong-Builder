@@ -11,6 +11,7 @@ import android.graphics.Canvas;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.anoshenko.android.toolbar.ToolbarButton;
 
 
 public class PlayActivity extends BaseActivity {
+    final static String TAG = "mahjong playact";
     private final static String STORE_KEY = "STORE";
     private final static String MARKED_KEY = "MARKED";
     private final static String ZOOM_KEY = "ZOOM";
@@ -699,6 +701,7 @@ public class PlayActivity extends BaseActivity {
                 autoplayFinish();
             }
 
+            Log.i(TAG, "winning...");
             mData.increaseWins();
             PauseTime();
             int mTime = (int) mCurrentTime / 1000;
@@ -743,13 +746,36 @@ public class PlayActivity extends BaseActivity {
 
     //--------------------------------------------------------------------------
     private void shuffleQuestion() {
-        Utils.Question(this, R.string.shuffle_question_no_moves,
-            new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    shuffle(true);
-                }
-            });
+        if (mDiesLeft == 0) {
+            Log.i(TAG, "no titles left - you won!");
+            mData.increaseWins();
+            PauseTime();
+            int mTime = (int) mCurrentTime / 1000;
+            int mPrevBestTime = mData.updateBestTime(mTime, mMemory.getUndosPerformed(), mShuffles);
+            mData.storeStatistics();
+            StatisticsDialog.show(PlayActivity.this, mData,
+                    mTime, mPrevBestTime,
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            Start(true);
+                        }
+                    },
+                    new Runnable() {
+                        @Override
+                        public void run() {
+                            finish();
+                        }
+                    });
+        } else {
+            Utils.Question(this, R.string.shuffle_question_no_moves,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            shuffle(true);
+                        }
+                    });
+    }
     }
 
     //--------------------------------------------------------------------------
