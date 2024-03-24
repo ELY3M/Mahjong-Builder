@@ -15,12 +15,14 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
 final class MahjonggData implements Comparable<MahjonggData> {
 
+	final static String TAG = "mahjong data";
 	private final static byte[] BYTE_MASK = {(byte)0x80, 0x40, 0x20, 0x10, 8, 4, 2, 1};
 	private final static int SIDE_WALL_SIZE = 2;
 
@@ -73,9 +75,11 @@ final class MahjonggData implements Comparable<MahjonggData> {
 
 		if (id < USER_GAME_ID) {
 			InputStream list_stream = mContext.getResources().openRawResource(R.raw.games_list);
+			Log.i(TAG,"games_list liststream: \n"+list_stream+"\n");
 			try {
 				while (list_stream.available() > 0) {
 					id = readUint24(list_stream);
+					Log.i(TAG,"games_list id: \n"+id+"\n");
 					if (id == mID) {
 						load(readUint24(list_stream));
 						return;
@@ -150,6 +154,7 @@ final class MahjonggData implements Comparable<MahjonggData> {
 	private void load(int pos) throws LoadExeption {
 		try {
 			InputStream stream = mContext.getResources().openRawResource(R.raw.games_data);
+			Log.i(TAG,"games_data stream: \n"+stream+"\n");
 			stream.skip(pos);
 
 			int name_len = stream.read();
@@ -202,6 +207,15 @@ final class MahjonggData implements Comparable<MahjonggData> {
 					off += mLayerWidth;
 				}
 			}
+
+			Log.i(TAG,"name: "+mName);
+			Log.i(TAG,"author: "+mAuthor);
+			Log.i(TAG,"comment: "+mComment);
+			Log.i(TAG,"layercount: "+mLayerCount);
+			Log.i(TAG,"layerheight: "+mLayerHeight);
+			Log.i(TAG,"layerwidth: "+mLayerWidth);
+			Log.i(TAG, "layer: "+mLayout);
+
 		} catch (IOException e) {
 			throw new LoadExeption(e.getMessage());
 		}

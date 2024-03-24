@@ -172,6 +172,7 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 		mAllGames.clear();
 
 		InputStream list_stream = getResources().openRawResource(R.raw.games_list);
+		Log.i(TAG,"liststream: \n"+list_stream+"\n");
 		try {
 			while (list_stream.available() > 0) {
 				try {

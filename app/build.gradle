@@ -1,11 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "27.0.3"
-
+    compileSdk 34
     defaultConfig {
         applicationId "com.anoshenko.android.mahjongg"
+        minSdkVersion 26
+        targetSdk 33
+        versionCode 14
+        versionName "1.4.4"
     }
 
     buildTypes {
@@ -14,4 +16,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    namespace 'com.anoshenko.android.mahjongg'
+}
+
+dependencies {
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
 }
