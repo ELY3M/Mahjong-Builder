@@ -4,7 +4,8 @@ android {
     compileSdk 34
     defaultConfig {
         applicationId "com.anoshenko.android.mahjongg"
-        minSdkVersion 26
+        minSdkVersion 23
+        targetSdkVersion 33
         versionCode 14
         versionName "1.4.4"
     }
