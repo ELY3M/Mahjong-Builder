@@ -23,7 +23,7 @@ public class PopupMenu implements ListAdapter, OnItemClickListener {
 
 	//--------------------------------------------------------------------------
 	public interface Listener {
-		public void onPopupMenuSelect(int command);
+		void onPopupMenuSelect(int command);
 	}
 
 	//--------------------------------------------------------------------------

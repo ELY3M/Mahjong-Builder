@@ -293,18 +293,28 @@ public abstract class BaseActivity extends Activity implements OnToolbarListener
 	protected void doCommand(int command) {
 		switch (command) {
 
-		case Command.ABOUT:
-			Utils.showAbout(this);
-			break;
+			case Command.BUILDER:
+				Intent intent = new Intent(this, BuilderActivity.class);
+				intent.putExtra(BaseActivity.GAME_ID_KEY, -1);
+				startActivityForResult(intent, Command.BUILDER_ACTIVITY);
+				break;
 
-		case Command.BACKGROUND:
-			startActivityForResult(new Intent(this, BackgroundActivity.class), Command.BACKGROUND_ACTIVITY);
-			break;
+			case Command.ABOUT:
+				Utils.showAbout(this);
+				break;
 
-		case Command.SETTINGS:
-			startActivityForResult(new Intent(this, SettingsActivity.class), Command.SETTINGS_ACTIVITY);
-			break;
-		}
+			case Command.BACKGROUND:
+				startActivityForResult(new Intent(this, BackgroundActivity.class), Command.BACKGROUND_ACTIVITY);
+				break;
+
+			case Command.SETTINGS:
+				startActivityForResult(new Intent(this, SettingsActivity.class), Command.SETTINGS_ACTIVITY);
+				break;
+			case Command.EXIT:
+				Utils.Exit();
+				break;
+	}
+
 	}
 
 	//--------------------------------------------------------------------------
@@ -391,5 +401,10 @@ public abstract class BaseActivity extends Activity implements OnToolbarListener
 
 		return key == null ? default_value : prefs.getString(key, default_value);
 	}
+
+
+
+
+
 
 }

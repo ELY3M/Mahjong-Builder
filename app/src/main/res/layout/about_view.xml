@@ -4,6 +4,7 @@
 	android:orientation="vertical"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
+	android:background="@color/black"
 	>
 
 	<RelativeLayout
@@ -64,7 +65,7 @@
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:textStyle="normal"
-					android:textColor="#FFFFFFFF"
+					android:textColor="@color/white"
 					android:text="@string/version_text"/>
 
 				<TextView
@@ -73,7 +74,7 @@
 					android:layout_height="wrap_content"
 					android:layout_marginLeft="8dip"
 					android:textStyle="normal"
-					android:textColor="#FFFFFFFF"
+					android:textColor="@color/white"
 					android:text="1.x.x"/>
 
 			</LinearLayout>
@@ -90,6 +91,8 @@
 		android:paddingRight="8dip"
 		android:gravity="center"
 		android:textStyle="normal"
+		android:textColor="@color/white"
+		android:textColorLink="@color/white"
 		android:autoLink="all"
 		android:text="@string/license"/>
 
@@ -101,6 +104,8 @@
 		android:paddingRight="8dip"
 		android:gravity="center"
 		android:textStyle="normal"
+		android:textColor="@color/white"
+		android:textColorLink="@color/white"
 		android:autoLink="all"
 		android:text="@string/home_page"/>
 
@@ -109,7 +114,8 @@
 		android:layout_height="wrap_content"
 		android:gravity="center"
 		android:textStyle="bold"
-		android:textColor="#FFFFFFFF"
+		android:textColor="@color/white"
+		android:textColorLink="@color/white"
 		android:paddingTop="24dip"
 		android:text="@string/copyright"/>
 

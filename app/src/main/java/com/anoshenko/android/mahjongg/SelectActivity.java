@@ -18,6 +18,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -27,6 +28,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.widget.ListView;
 import android.widget.TabHost;
 
@@ -35,16 +37,16 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 
 	final static String TAG = "mahjong selectact";
 	private final static String FAVORITES_TAG = "FAVORITES";
+	private final static String FAVORITES_KEY = "FAVORITES";
+
 	private final static String GAME_LIST_TAG = "GAME_LIST";
 
-	private final static String FAVORITES_KEY = "FAVORITES";
 	private final static char FAVORITE_SEPARATOR = ';';
 
 	private final static String CURRENT_PAGE_KEY = "CURRENT_PAGE";
 
 	private final Vector<MahjonggData> mFavorites = new Vector<MahjonggData>();
 	private final Vector<MahjonggData> mAllGames = new Vector<MahjonggData>();
-
 	@SuppressWarnings("unused")
 	private GameListAdapter mFavoritesAdapter, mAllGamesAdapter;
 
@@ -81,7 +83,6 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 		tab.setContent(R.id.AllGamesList);
 		mTabHost.addTab(tab);
 
-
 		createGameList();
 
 		Bitmap bitmap = Bitmap.createBitmap(mPreviewWidth, mPreviewHeight, Bitmap.Config.ARGB_8888);
@@ -108,13 +109,32 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK)
-		Log.i(TAG, "back key pressed !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		Log.i(TAG, "back key pressed KEYCODE_BACK");
 		openOptionsMenu();
-		return true;
+		///return true;
 		// use this instead if you want to preserve onKeyDown() behavior
-		// return super.onKeyDown(keyCode, event);
+		return super.onKeyDown(keyCode, event);
 	}
 
+	@Override
+	public void onBackPressed()
+	{
+		Log.i(TAG, "back key pressed - onBackPressed");
+		openOptionsMenu();
+		///super.onBackPressed();  // optional depending on your needs
+	}
+
+
+	@Override
+	public void onOptionsMenuClosed(Menu menu) {
+		super.onOptionsMenuClosed(menu);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+			// Workaround for https://issuetracker.google.com/issues/315761686
+			invalidateOptionsMenu();
+		}
+	}
+	
+	
 	//--------------------------------------------------------------------------
 	protected void onSaveInstanceState(Bundle outState) {
 		outState.putInt(CURRENT_PAGE_KEY, mTabHost.getCurrentTab());
