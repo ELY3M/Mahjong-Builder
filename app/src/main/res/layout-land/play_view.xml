@@ -3,28 +3,29 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
 	tools:ignore="MissingDefaultResource">
 
 	<com.anoshenko.android.toolbar.VerticalToolbar
 		android:id="@+id/PlayToolbar"
 		android:layout_width="56dip"
-		android:layout_height="fill_parent"
+		android:layout_height="match_parent"
 		android:layout_alignParentLeft="true"
 		/>
 
 	<com.anoshenko.android.toolbar.VerticalToolbar
 		android:id="@+id/PlayToolbarRight"
 		android:layout_width="56dip"
-		android:layout_height="fill_parent"
+		android:layout_height="match_parent"
 		android:layout_alignParentRight="true"
 		android:visibility="gone"
 		/>
 
 	<RelativeLayout
 		android:id="@+id/PlayTitle"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/PlayToolbar"
 		android:layout_toLeftOf="@id/PlayToolbarRight"
@@ -54,8 +55,8 @@
 
 	<com.anoshenko.android.mahjongg.GameView
 		android:id="@+id/PlayArrea"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
 		android:layout_toRightOf="@id/PlayToolbar"
 		android:layout_toLeftOf="@id/PlayToolbarRight"
 		android:layout_below="@id/PlayTitle"

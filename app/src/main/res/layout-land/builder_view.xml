@@ -3,28 +3,29 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
 	tools:ignore="MissingDefaultResource">
 
 	<com.anoshenko.android.toolbar.VerticalToolbar
 		android:id="@+id/BuilderToolbar"
 		android:layout_width="56dip"
-		android:layout_height="fill_parent"
+		android:layout_height="match_parent"
 		android:layout_alignParentLeft="true"
 		/>
 
 	<com.anoshenko.android.toolbar.VerticalToolbar
 		android:id="@+id/BuilderToolbarRight"
 		android:layout_width="56dip"
-		android:layout_height="fill_parent"
+		android:layout_height="match_parent"
 		android:layout_alignParentRight="true"
 		android:visibility="gone"
 		/>
 
 	<RelativeLayout
 		android:id="@+id/BuilderTitle"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_toRightOf="@id/BuilderToolbar"
 		android:layout_toLeftOf="@id/BuilderToolbarRight"
@@ -87,8 +88,8 @@
 
 	<com.anoshenko.android.mahjongg.GameView
 		android:id="@+id/BuilderArrea"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
 		android:layout_toRightOf="@id/BuilderToolbar"
 		android:layout_toLeftOf="@id/BuilderToolbarRight"
 		android:layout_below="@id/BuilderTitle"

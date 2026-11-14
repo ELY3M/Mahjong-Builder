@@ -4,7 +4,8 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
-	android:orientation="vertical">
+	android:orientation="vertical"
+	android:fitsSystemWindows="true">
 
 	<TextView
 		android:layout_width="wrap_content"
@@ -15,21 +16,21 @@
 
 	<Button
 		android:id="@+id/SaveAndExitButton"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:text="@string/save_and_exit" />
 
 	<Button
 		android:id="@+id/ExitWithoutSaveButton"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:text="@string/exit_without_save" />
 
 	<Button
 		android:id="@+id/ContinueEditingButton"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:textAppearance="?android:attr/textAppearanceMedium"
 		android:text="@string/continue_editing" />

@@ -3,13 +3,14 @@
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
 	tools:ignore="MissingDefaultResource">
 
 	<RelativeLayout
 		android:id="@+id/PlayTitle"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:padding="2dip">
 
@@ -37,14 +38,14 @@
 
 	<com.anoshenko.android.toolbar.HorizontalToolbar
 		android:id="@+id/PlayToolbar"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="56dip"
 		android:layout_alignParentBottom="true"
 		/>
 
 	<com.anoshenko.android.mahjongg.GameView
 		android:id="@+id/PlayArrea"
-		android:layout_width="fill_parent"
+		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_above="@id/PlayToolbar"
 		android:layout_below="@id/PlayTitle"

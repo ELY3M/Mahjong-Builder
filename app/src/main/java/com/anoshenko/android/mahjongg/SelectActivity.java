@@ -8,8 +8,6 @@ import java.util.Vector;
 
 import com.anoshenko.android.background.BackgroundActivity;
 import com.anoshenko.android.mahjongg.MahjonggData.LoadExeption;
-
-import android.app.TabActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,21 +16,27 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.widget.ListView;
 import android.widget.TabHost;
 
-public class SelectActivity extends TabActivity implements PopupMenu.Listener {
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTabHost;
+
+
+
+public class SelectActivity extends AppCompatActivity implements PopupMenu.Listener {
 
 
 	final static String TAG = "mahjong selectact";
@@ -50,25 +54,24 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 	@SuppressWarnings("unused")
 	private GameListAdapter mFavoritesAdapter, mAllGamesAdapter;
 
-	private int mPreviewWidth, mPreviewHeight;
-	private TabHost mTabHost;
-	public final Handler mHandler = new Handler();
+    private int mPreviewWidth, mPreviewHeight;
+    private FragmentTabHost mTabHost;
+    public final Handler mHandler = new Handler();
 
-	//--------------------------------------------------------------------------
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		Utils.setOrientation(this);
+    //--------------------------------------------------------------------------
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        Utils.setOrientation(this);
 
-		super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.game_select);
 
-		mTabHost = getTabHost();
+        mTabHost = findViewById(R.id.tabhost);
+        mTabHost.setup(this, getSupportFragmentManager(), android.R.id.tabcontent);
 
-		LayoutInflater.from(this).inflate(R.layout.game_select,
-				mTabHost.getTabContentView(), true);
-
-		Resources res = getResources();
-		TabHost.TabSpec tab;
-		Bitmap icon;
+        Resources res = getResources();
+        TabHost.TabSpec tab;
+        Bitmap icon;
 		String[] aStart_tab_items = res.getStringArray(R.array.start_tab_items);
 		
 		icon = BitmapFactory.decodeResource(res, R.drawable.icon_favorites);
@@ -86,18 +89,18 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 		createGameList();
 
 		Bitmap bitmap = Bitmap.createBitmap(mPreviewWidth, mPreviewHeight, Bitmap.Config.ARGB_8888);
-		Canvas g = new Canvas(bitmap);
-		g.drawARGB(255, 0, 128, 0);
+        Canvas g = new Canvas(bitmap);
+        g.drawARGB(255, 0, 128, 0);
 
-		mFavoritesAdapter = new GameListAdapter(this, mFavorites, bitmap,
-				(ListView)findViewById(R.id.FavoritesList));
+        mFavoritesAdapter = new GameListAdapter(this, mFavorites, bitmap,
+                findViewById(R.id.FavoritesList));
 
-		mAllGamesAdapter = new GameListAdapter(this, mAllGames, bitmap,
-				(ListView)findViewById(R.id.AllGamesList));
+        mAllGamesAdapter = new GameListAdapter(this, mAllGames, bitmap,
+                findViewById(R.id.AllGamesList));
 
-		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
-		int current = Integer.parseInt(prefs.getString(getString(R.string.pref_start_tab_key), "0"));
+        int current = Integer.parseInt(prefs.getString(getString(R.string.pref_start_tab_key), "0"));
 		if (savedInstanceState != null)
 			current = savedInstanceState.getInt(CURRENT_PAGE_KEY, current);
 
@@ -116,29 +119,11 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 		return super.onKeyDown(keyCode, event);
 	}
 
-	@Override
-	public void onBackPressed()
-	{
-		Log.i(TAG, "back key pressed - onBackPressed");
-		openOptionsMenu();
-		///super.onBackPressed();  // optional depending on your needs
-	}
-
-
-	@Override
-	public void onOptionsMenuClosed(Menu menu) {
-		super.onOptionsMenuClosed(menu);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-			// Workaround for https://issuetracker.google.com/issues/315761686
-			invalidateOptionsMenu();
-		}
-	}
-	
-	
-	//--------------------------------------------------------------------------
-	protected void onSaveInstanceState(Bundle outState) {
-		outState.putInt(CURRENT_PAGE_KEY, mTabHost.getCurrentTab());
-	}
+    //--------------------------------------------------------------------------
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt(CURRENT_PAGE_KEY, mTabHost.getCurrentTab());
+    }
 
 	//--------------------------------------------------------------------------
 	@Override
@@ -244,7 +229,7 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 		//} else {
 			Intent intent = new Intent(this, PlayActivity.class);
 			intent.putExtra(BaseActivity.GAME_ID_KEY, mahjongg.getId());
-			startActivityForResult(intent, Command.PLAY_ACTIVITY);
+            playResult.launch(intent);
 		//}
 	}
 
@@ -389,95 +374,105 @@ public class SelectActivity extends TabActivity implements PopupMenu.Listener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		Utils.createMenu(this, menu, true);
-		return true;
-	}
+        return true;
+    }
 
-	//--------------------------------------------------------------------------
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+    //--------------------------------------------------------------------------
 
-		switch (item.getItemId()) {
-		case Command.EXIT:
-				Utils.Exit();
-				return true;
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case Command.ABOUT:
+                Utils.showAbout(this);
+                return true;
 
-		case Command.ABOUT:
-			Utils.showAbout(this);
-			return true;
+            case Command.BACKGROUND:
+                backgroundResult.launch(new Intent(this, BackgroundActivity.class));
+                return true;
 
-		case Command.BACKGROUND:
-			startActivityForResult(new Intent(this, BackgroundActivity.class), Command.BACKGROUND_ACTIVITY);
-			return true;
+            case Command.SETTINGS:
+                settingsResult.launch(new Intent(this, SettingsActivity.class));
+                return true;
 
-		case Command.SETTINGS:
-			startActivityForResult(new Intent(this, SettingsActivity.class), Command.SETTINGS_ACTIVITY);
-			return true;
+            case Command.BUILDER:
+                startBuilder(-1);
+                return true;
+        }
 
-		case Command.BUILDER:
-			startBuilder(-1);
-			return true;
-		}
+        return super.onOptionsItemSelected(item);
+    }
 
-		return false;
-	}
+    //--------------------------------------------------------------------------
+    private void startBuilder(int edit_id) {
+        Intent intent = new Intent(this, BuilderActivity.class);
+        intent.putExtra(BaseActivity.GAME_ID_KEY, edit_id);
+        builderResult.launch(intent);
+    }
 
-	//--------------------------------------------------------------------------
-	private void startBuilder(int edit_id) {
-		Intent intent = new Intent(this, BuilderActivity.class);
-		intent.putExtra(BaseActivity.GAME_ID_KEY, edit_id);
-		startActivityForResult(intent, Command.BUILDER_ACTIVITY);
-	}
+    private final ActivityResultLauncher<Intent> playResult = registerForActivityResult(new StartActivityForResult(), result -> {
+        _onActivityResult(Command.PLAY_ACTIVITY, result);
+    });
+    private final ActivityResultLauncher<Intent> backgroundResult = registerForActivityResult(new StartActivityForResult(), result -> {
+        _onActivityResult(Command.BACKGROUND_ACTIVITY, result);
+    });
 
-	//--------------------------------------------------------------------------
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		switch (requestCode) {
-		case Command.PLAY_ACTIVITY:
-			if (resultCode == Command.BUILDER) {
-				startBuilder(-1);
-			}
-			break;
+    private final ActivityResultLauncher<Intent> settingsResult = registerForActivityResult(new StartActivityForResult(), result -> {
+        _onActivityResult(Command.SETTINGS_ACTIVITY, result);
+    });
 
-		case Command.BACKGROUND_ACTIVITY:
-			break;
+    private final ActivityResultLauncher<Intent> builderResult = registerForActivityResult(new StartActivityForResult(), result -> {
+        _onActivityResult(Command.BUILDER_ACTIVITY, result);
+    });
 
-		case Command.SETTINGS_ACTIVITY:
-			Utils.setOrientation(this);
-			break;
+    private void _onActivityResult(int requestCode, ActivityResult result) {
+        var resultCode = result.getResultCode();
+        switch (requestCode) {
+            case Command.PLAY_ACTIVITY:
+                if (resultCode == Command.BUILDER) {
+                    startBuilder(-1);
+                }
+                break;
 
-		case Command.BUILDER_ACTIVITY:
-			if (resultCode >= 0) {
-				boolean favorite = false;
+            case Command.BACKGROUND_ACTIVITY:
+                break;
 
-				for (MahjonggData game : mAllGames)
-					if (game.getId() == resultCode) {
-						mAllGames.remove(game);
-						if (mFavorites.indexOf(game) >= 0) {
-							mFavorites.remove(game);
-							favorite = true;
-						}
-						break;
-					}
+            case Command.SETTINGS_ACTIVITY:
+                Utils.setOrientation(this);
+                break;
 
-				try {
-					MahjonggData game = new MahjonggData(this, resultCode);
-					game.createPreview(mPreviewWidth, mPreviewHeight);
+            case Command.BUILDER_ACTIVITY:
+                if (resultCode >= 0) {
+                    boolean favorite = false;
 
-					mAllGames.add(game);
-					Collections.sort(mAllGames);
-					((ListView)findViewById(R.id.AllGamesList)).invalidateViews();
+                    for (MahjonggData game : mAllGames)
+                        if (game.getId() == resultCode) {
+                            mAllGames.remove(game);
+                            if (mFavorites.indexOf(game) >= 0) {
+                                mFavorites.remove(game);
+                                favorite = true;
+                            }
+                            break;
+                        }
 
-					if (favorite) {
-						mFavorites.add(game);
-						Collections.sort(mFavorites);
-						((ListView)findViewById(R.id.FavoritesList)).invalidateViews();
-					}
+                    try {
+                        MahjonggData game = new MahjonggData(this, resultCode);
+                        game.createPreview(mPreviewWidth, mPreviewHeight);
 
-				} catch (LoadExeption e) {
-					e.printStackTrace();
-				}
-			}
-			break;
-		}
-	}
+                        mAllGames.add(game);
+                        Collections.sort(mAllGames);
+                        ((ListView) findViewById(R.id.AllGamesList)).invalidateViews();
+
+                        if (favorite) {
+                            mFavorites.add(game);
+                            Collections.sort(mFavorites);
+                            ((ListView) findViewById(R.id.FavoritesList)).invalidateViews();
+                        }
+
+                    } catch (LoadExeption e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+        }
+    }
 }
